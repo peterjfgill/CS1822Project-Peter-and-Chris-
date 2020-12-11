@@ -19,27 +19,52 @@ class ExpenseList:
   def byCat(self, cat):
     #A breakdown of the users spending by category
     cur = self.head
-    summary = ""
+    total = 0
     while cur:
       if (cur.expCategory == cat):
-        summary += "You spent " + str(cur.expAmount) + " on " + cur.expDesc + "\n"
+        total += cur.expAmount
       cur = cur.getNext()
-    return summary
+    return "You spent " + str(total) + " on " + cur.expCategory + "\n"
 
 
-  def getAvg():
+  def getTotalAvg(self):
     #Display average spend per item
-    pass
-  def total():
-    #Display total expenditure
-    pass
+    cur = self.head
+    length = 0
+    total = 0
+    avg = 0
+    while cur:
+        length += 1
+        total += cur.expAmount
+        cur = cur.getNext()
+    avg = total/length
+    return "Your average spend per item was " + avg + " and your total expenditure was " + total + ".\n"
+
 
   def addExpense(self, desc, amount, cat):
+    #Add new expense to linked list
     newExpense = Expense(desc, amount, cat)
     newExpense.setNext(self.head)
     self.head = newExpense
 
+  def delExpense(self, data):
+    cur = self.head
+    previous = None
+    found = False
+    while cur and found is False:
+        if (cur.expDesc == data):
+            found = True
+        else:
+            previous = cur
+            cur = cur.getNext()
+    if (cur is None):
+        print("No expense with this description is recorded.")
+    if (previous is None):
+        self.head = cur.getNext()
+    else:
+        previous.setNext(cur.getNext())
 def main():
+  ExpenseCategories = []
   Expenses = ExpenseList()
   menu = True
 
@@ -55,14 +80,17 @@ def main():
         choice = int(input("Edit Mode\n1. Add expense\n2. Remove expense\n3. Exit\n"))
         
         if (choice == 1):
-          #Add expense to linked list
+          #Calls addExpense with parameters given by user
           desc = input("Description of expense: ")
           amount = float(input("Enter the cost of this expense: "))
           cat = input("Enter the category this expense falls under: ")
+          if(cat not in ExpenseCategories):
+            ExpenseCategories.append(cat)
           Expenses.addExpense(desc, amount, cat)
-          print(Expenses.head.expDesc)
         if (choice == 2):
-          pass
+          #calls delExpense with description of item to be deleted
+          desc = input("Describe the expense you wish to remove")
+          Expenses.delExpense(desc)
 
         if (choice == 3):
           #Exit to main menu
@@ -73,8 +101,10 @@ def main():
       analysis = True
     
       while analysis == True:
-        cat = input("Enter a category to summarise: ")
-        print(Expenses.byCat(cat))
+        for cat in ExpenseCategories:
+          print(Expenses.byCat(cat))
+        print(Expenses.getTotalAvg())
+        analysis = False
     elif (choice == 3):
 
       menu = False
