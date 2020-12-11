@@ -20,11 +20,11 @@ class ExpenseList:
     #A breakdown of the users spending by category
     cur = self.head
     total = 0
-    while cur:
+    while cur != None:
       if (cur.expCategory == cat):
         total += cur.expAmount
       cur = cur.getNext()
-    return "You spent " + str(total) + " on " + cur.expCategory + "\n"
+    return "You spent " + str(total) + " on " + cat + "\n"
 
 
   def getTotalAvg(self):
@@ -33,12 +33,12 @@ class ExpenseList:
     length = 0
     total = 0
     avg = 0
-    while cur:
+    while cur != None:
         length += 1
         total += cur.expAmount
         cur = cur.getNext()
     avg = total/length
-    return "Your average spend per item was " + avg + " and your total expenditure was " + total + ".\n"
+    return "Your average spend per item was " + str(avg) + " and your total expenditure was " + str(total) + ".\n"
 
 
   def addExpense(self, desc, amount, cat):
@@ -51,7 +51,7 @@ class ExpenseList:
     cur = self.head
     previous = None
     found = False
-    while cur and found is False:
+    while (cur.getNext() != None) and (found is False):
         if (cur.expDesc == data):
             found = True
         else:
