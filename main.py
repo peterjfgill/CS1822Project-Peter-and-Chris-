@@ -24,7 +24,7 @@ class ExpenseList:
   def addexpense(self, desc, amount, cat):
     newExpense = Expense(desc, amount, cat)
     newExpense.set_next(self.head)
-    self.head = new_node
+    self.head = newExpense
 
 def main():
   menu = True
