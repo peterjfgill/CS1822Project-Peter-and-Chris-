@@ -5,15 +5,28 @@ class Expense:
     self.expCategory = expCategory
     self.next = None
 
-  def set_next(self, newNext):
+  def setNext(self, newNext):
         self.next = newNext
+
+  def getNext(self):
+    return self.next
 
 class ExpenseList:
   def __init__(self):
       self.head = None
-  def byCat():
+  
+  
+  def byCat(self, cat):
     #A breakdown of the users spending by category
-    pass
+    cur = self.head
+    summary = ""
+    while cur:
+      if (cur.expCategory == cat):
+        summary += "You spent " + str(cur.expAmount) + " on " + cur.expDesc + "\n"
+      cur = cur.getNext()
+    return summary
+
+
   def getAvg():
     #Display average spend per item
     pass
@@ -21,18 +34,19 @@ class ExpenseList:
     #Display total expenditure
     pass
 
-  def addexpense(self, desc, amount, cat):
+  def addExpense(self, desc, amount, cat):
     newExpense = Expense(desc, amount, cat)
-    newExpense.set_next(self.head)
+    newExpense.setNext(self.head)
     self.head = newExpense
 
 def main():
+  Expenses = ExpenseList()
   menu = True
 
   while menu:
     choice = int(input("Expense System\n1. Edit mode\n2. Analysis mode\n3. Exit\n"))
     
-    if choice == 1:
+    if (choice == 1):
 
       edit = True
 
@@ -40,30 +54,28 @@ def main():
         
         choice = int(input("Edit Mode\n1. Add expense\n2. Remove expense\n3. Exit\n"))
         
-        if choice == 1:
+        if (choice == 1):
           #Add expense to linked list
           desc = input("Description of expense: ")
           amount = float(input("Enter the cost of this expense: "))
           cat = input("Enter the category this expense falls under: ")
-          ExpenseList.addexpense()
+          Expenses.addExpense(desc, amount, cat)
+          print(Expenses.head.expDesc)
+        if (choice == 2):
+          pass
 
-        if choice == 2:
-        
-
-        if choice == 3:
+        if (choice == 3):
           #Exit to main menu
           edit = False
 
-    elif choice == 2:
+    elif (choice == 2):
 
       analysis = True
     
       while analysis == True:
-
-        print("analysis")
-        analysis = False
-
-    elif choice == 3:
+        cat = input("Enter a category to summarise: ")
+        print(Expenses.byCat(cat))
+    elif (choice == 3):
 
       menu = False
 
